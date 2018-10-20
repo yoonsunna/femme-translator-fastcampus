@@ -8,14 +8,39 @@
 </head>
 <body>
     <div>
-        <h1>팜므어 번역기</h1>
+        <h1>팜므어 번역기 나윤선</h1>
         <textarea name="" id="" cols="30" rows="10"></textarea>
         <button>번역</button>
         <div class="result"></div>
     </div>
     <script src="./hangul.js"></script>
     <script>
+ 
+ 
+    function checkTextarea() {
         console.log("하이하이")
+
+        var textareaValue = document.querySelector('textarea').value
+        var textareaArr = textareaValue.split("") // ["관", "라"]
+        var changeValue = textareaArr.map(function(gulja){
+            var disassembleArr = Hangul.disassemble(gulja); // ["ㄱ", "ㅗ", ㅏ , ㄴ ]
+            var isElementFour = disassembleArr.length == 4
+            var isMoem = Hangul.isVowel(disassembleArr[1]) && Hangul.isVowel(disassembleArr[2])
+
+            if(isElementFour && isMoem) {
+                var tmp = disassembleArr[3];
+                disassembleArr[3] = disassembleArr[2];
+                disassembleArr[2] = tmp;
+            }
+
+            return Hangul.assemble(disassembleArr)
+        })
+        return changeValue.join('')
+    }
+
+    document.querySelector('button').addEventListener('click', function() {
+        document.querySelector('.result').innerText = checkTextarea()
+    })
     </script>
     
 </body>
